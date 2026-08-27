@@ -1,0 +1,154 @@
+/*
+ * Counterframe design tokens.
+ *
+ * Light is the default: warm limestone paper, ink-black type, three restrained
+ * accents (rust, olive, brass). Dark is warm charcoal, never pure black, and
+ * keeps the same accent roles rather than switching to a neon scheme.
+ *
+ * Colour is never the only carrier of meaning. Every status that uses an
+ * accent also ships a glyph or a word — see `labels.ts`.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* surfaces */
+  --surface: #faf7f1;
+  --surface-raised: #fffdf9;
+  --surface-sunken: #f1ebe0;
+  --surface-inset: #e9e2d4;
+
+  /* ink */
+  --ink: #1a1714;
+  --ink-strong: #000000;
+  --ink-muted: #59524a;
+  --ink-faint: #6e6659;
+  --ink-inverse: #faf7f1;
+
+  /* rules */
+  --rule: #ded5c6;
+  --rule-strong: #c3b8a4;
+  --rule-hair: #e8e0d2;
+
+  /* accents */
+  --rust: #a0442a;
+  --rust-soft: #f2e2da;
+  --olive: #56603c;
+  --olive-soft: #e5e7d6;
+  --brass: #7a5f1c;
+  --brass-soft: #f0e6cd;
+
+  /* semantic */
+  --accent: var(--rust);
+  --focus-ring: #1a1714;
+  --focus-ring-offset: var(--surface);
+  --selection: #e8dcc9;
+
+  /* type */
+  --font-serif: var(--font-source-serif), "Noto Serif", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-public-sans), "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-deva: var(--font-noto-deva), "Noto Sans Devanagari", var(--font-sans);
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, monospace;
+
+  --step--2: 0.6875rem;
+  --step--1: 0.8125rem;
+  --step-0: 0.9375rem;
+  --step-1: 1.0625rem;
+  --step-2: 1.25rem;
+  --step-3: 1.5rem;
+  --step-4: 1.9375rem;
+  --step-5: 2.5rem;
+  --step-6: 3.25rem;
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.32;
+  --lh-body: 1.62;
+  --lh-read: 1.72;
+
+  /* space */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+
+  /* layout */
+  --measure: 34rem;
+  --shell-max: 84rem;
+  --rail-w: 19rem;
+  --radius: 2px;
+  --radius-lg: 4px;
+
+  /* motion */
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --dur-slow: 380ms;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --surface: #17150f;
+    --surface-raised: #1f1c16;
+    --surface-sunken: #12100b;
+    --surface-inset: #272319;
+
+    --ink: #efe8db;
+    --ink-strong: #ffffff;
+    --ink-muted: #b2a893;
+    --ink-faint: #948b78;
+    --ink-inverse: #17150f;
+
+    --rule: #353024;
+    --rule-strong: #4b4436;
+    --rule-hair: #29251c;
+
+    --rust: #dc8f68;
+    --rust-soft: #3a271d;
+    --olive: #a8b183;
+    --olive-soft: #262a1c;
+    --brass: #cba951;
+    --brass-soft: #302819;
+
+    --focus-ring: #efe8db;
+    --focus-ring-offset: var(--surface);
+    --selection: #3a3327;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --surface: #17150f;
+  --surface-raised: #1f1c16;
+  --surface-sunken: #12100b;
+  --surface-inset: #272319;
+
+  --ink: #efe8db;
+  --ink-strong: #ffffff;
+  --ink-muted: #b2a893;
+  --ink-faint: #948b78;
+  --ink-inverse: #17150f;
+
+  --rule: #353024;
+  --rule-strong: #4b4436;
+  --rule-hair: #29251c;
+
+  --rust: #dc8f68;
+  --rust-soft: #3a271d;
+  --olive: #a8b183;
+  --olive-soft: #262a1c;
+  --brass: #cba951;
+  --brass-soft: #302819;
+
+  --focus-ring: #efe8db;
+  --focus-ring-offset: var(--surface);
+  --selection: #3a3327;
+}

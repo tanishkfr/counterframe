@@ -1,0 +1,11 @@
+# Install scripts are allowed only for these known-good native/binary packages:
+# esbuild (Vitest bundler), sharp (Next.js image pipeline), unrs-resolver
+# (ESLint module resolution). Nothing else may run scripts on install.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver

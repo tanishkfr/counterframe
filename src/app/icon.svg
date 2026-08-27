@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+  <!--
+    The split-frame mark: two offset rectangles, one filled and one open —
+    two views of the same subject. Drawn in a single rust tone so it stays
+    legible against both light and dark browser chrome.
+  -->
+  <rect x="1" y="4" width="13" height="16" fill="#b6512f" />
+  <rect x="10" y="4" width="13" height="16" fill="none" stroke="#b6512f" stroke-width="2" />
+</svg>

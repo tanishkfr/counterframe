@@ -1,0 +1,56 @@
+MIT License
+
+Copyright (c) 2026 Tanishk
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--------------------------------------------------------------------------------
+THIRD-PARTY CONTENT — NOT COVERED BY THE MIT LICENCE ABOVE
+--------------------------------------------------------------------------------
+
+The MIT licence covers the source code of this project only. It does not and
+cannot relicense the third-party material bundled with it.
+
+Photographs in `public/media/` are reproduced under their own licences and
+remain the property of their creators. Each is credited in the application
+interface with its licence and a link to the source file record:
+
+  viewpoint-a-bharat-mandapam.jpg
+    "Bharat Mandapam illuminated" by DesiBoy101, via Wikimedia Commons.
+    Licence: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+
+  viewpoint-b-delhi-settlement.jpg
+    "Delhi India Slum January 2011" by Sistak, via Wikimedia Commons.
+    Licence: CC BY-SA 2.0 — https://creativecommons.org/licenses/by-sa/2.0/
+
+  official-bharat-mandapam-evening.jpg
+    "Bharat Mandapam Evening View" by the Photo Division, Press Information
+    Bureau, Ministry of Information and Broadcasting, Government of India,
+    via Wikimedia Commons.
+    Licence: GODL-India — https://data.gov.in/government-open-data-license-india
+
+Short quoted excerpts from four published news articles appear in
+`src/lib/seed/articles.ts`. They are reproduced under fair dealing / fair use
+for the purposes of criticism, review and education, are attributed to their
+outlet and author with a canonical link, and remain the copyright of their
+respective publishers. They are not relicensed by this file. See
+PRODUCT-DECISIONS.md for the source policy.
+
+The editorial panel, community accounts and all funding figures in the seed
+data are fictional. See README.md.
