@@ -1260,6 +1260,19 @@ figure.article-figure figcaption {
 
 /* ------------------------------- filters ------------------------------- */
 
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: flex-end;
+  padding-block: var(--s-4);
+}
+
+.filter-controls .field + .field,
+.filter-controls .field {
+  margin-block-start: 0;
+}
+
 .filter-bar {
   display: flex;
   flex-wrap: wrap;

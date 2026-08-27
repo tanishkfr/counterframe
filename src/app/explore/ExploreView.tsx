@@ -30,6 +30,7 @@ export function ExploreView() {
   }));
 
   const results = useMemo(() => filterIssues(db, filter), [db, filter]);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const toggle = <K extends "topics" | "countries" | "regions" | "statuses" | "sourceTypes">(
     key: K,
@@ -83,7 +84,52 @@ export function ExploreView() {
         </div>
       </form>
 
-      <div className="filter-bar">
+      {/* Seven chip groups pushed the results themselves below the fold. The
+          filters stay one click away, with the active count on the control so
+          nothing is hidden silently. */}
+      <div className="filter-controls">
+        <button
+          type="button"
+          className="btn"
+          aria-expanded={filtersOpen}
+          aria-controls="explore-filters"
+          onClick={() => setFiltersOpen((v) => !v)}
+        >
+          Filters
+          {activeCount > 0 && <span className="badge" data-tone="ink">{activeCount}</span>}
+        </button>
+
+        <div className="field">
+          <label className="field-label" htmlFor="explore-sort">
+            Sort
+          </label>
+          <select
+            id="explore-sort"
+            className="select"
+            value={filter.sort}
+            onChange={(e) => setFilter((f) => ({ ...f, sort: e.target.value as IssueSort }))}
+          >
+            {SORTS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {activeCount > 0 && (
+          <button
+            type="button"
+            className="btn"
+            data-variant="quiet"
+            onClick={() => setFilter({ ...emptyFilter, query: filter.query })}
+          >
+            Clear {activeCount} filter{activeCount === 1 ? "" : "s"}
+          </button>
+        )}
+      </div>
+
+      <div className="filter-bar" id="explore-filters" hidden={!filtersOpen}>
         <div className="field">
           <span className="field-label" id="f-status">
             Status
@@ -194,34 +240,7 @@ export function ExploreView() {
           </label>
         </div>
 
-        <div className="field">
-          <label className="field-label" htmlFor="explore-sort">
-            Sort
-          </label>
-          <select
-            id="explore-sort"
-            className="select"
-            value={filter.sort}
-            onChange={(e) => setFilter((f) => ({ ...f, sort: e.target.value as IssueSort }))}
-          >
-            {SORTS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
 
-        {activeCount > 0 && (
-          <button
-            type="button"
-            className="btn"
-            data-variant="quiet"
-            onClick={() => setFilter({ ...emptyFilter, query: filter.query })}
-          >
-            Clear {activeCount} filter{activeCount === 1 ? "" : "s"}
-          </button>
-        )}
       </div>
 
       <p className="meta" style={{ marginBlock: "var(--s-4)" }} role="status">

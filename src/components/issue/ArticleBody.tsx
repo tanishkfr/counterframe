@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 
-import { Badge } from "@/components/primitives";
+import { Badge, Disclosure } from "@/components/primitives";
 import { formatDateTime } from "@/lib/format";
 import { ROLE_LABEL, TACTIC_LABEL } from "@/lib/labels";
 import { isSourceBlock } from "@/lib/immutability";
@@ -257,20 +257,7 @@ function AnnotationCard({
         </span>
       </h3>
       <p>{annotation.explanation}</p>
-      <dl>
-        <dt>Evidence</dt>
-        <dd>{annotation.evidence}</dd>
-        <dt>Author</dt>
-        <dd>
-          {ROLE_LABEL[annotation.authorRole]} · {formatDateTime(annotation.createdAt)}
-        </dd>
-        <dt>Revisions</dt>
-        <dd>
-          {annotation.revisionIds.length === 0
-            ? "None since first publication"
-            : annotation.revisionIds.join(", ")}
-        </dd>
-      </dl>
+
       {annotation.educationSlug && (
         <p style={{ marginBlockStart: "var(--s-3)" }}>
           <Link href={`/education/${annotation.educationSlug}`}>
@@ -278,6 +265,28 @@ function AnnotationCard({
           </Link>
         </p>
       )}
+
+      {/* Provenance is what makes an annotation checkable, so it stays — but
+          it is reference material, not the point, and eleven expanded copies
+          of it buried the explanations they belong to. */}
+      <div style={{ marginBlockStart: "var(--s-2)" }}>
+        <Disclosure summary="Evidence and provenance">
+          <dl>
+            <dt>Evidence</dt>
+            <dd>{annotation.evidence}</dd>
+            <dt>Author</dt>
+            <dd>
+              {ROLE_LABEL[annotation.authorRole]} · {formatDateTime(annotation.createdAt)}
+            </dd>
+            <dt>Revisions</dt>
+            <dd>
+              {annotation.revisionIds.length === 0
+                ? "None since first publication"
+                : annotation.revisionIds.join(", ")}
+            </dd>
+          </dl>
+        </Disclosure>
+      </div>
     </aside>
   );
 }

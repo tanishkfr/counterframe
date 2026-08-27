@@ -170,6 +170,7 @@ export function IssueChrome({ issue, children }: { issue: Issue; children: React
 /** Panel's written justification that the two panes genuinely contrast. */
 export function ContrastRationale({ issue }: { issue: Issue }) {
   const { db, prefs } = useStore();
+  const [open, setOpen] = useState(false);
   const rationale = resolveContent(
     db,
     "issue",
@@ -184,9 +185,23 @@ export function ContrastRationale({ issue }: { issue: Issue }) {
       <h2 id="contrast-heading" className="eyebrow">
         Why these sources contrast
       </h2>
-      <p style={{ marginBlockStart: "var(--s-3)" }} lang={prefs.language}>
+      <p
+        id="contrast-rationale"
+        className={open ? undefined : "lede-clamp"}
+        style={{ marginBlockStart: "var(--s-3)" }}
+        lang={prefs.language}
+      >
         {rationale.text}
       </p>
+      <button
+        type="button"
+        className="lede-toggle"
+        aria-expanded={open}
+        aria-controls="contrast-rationale"
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? "Show less" : "Read the panel's full reasoning"}
+      </button>
       <p className="meta" style={{ marginBlockStart: "var(--s-3)" }}>
         Panel verdict on the pairing: <strong>{issue.contrastVerdict}</strong>. Counterframe
         publishes pairings it judges to be converging or insufficiently contrasting rather than

@@ -244,6 +244,43 @@ that names the destination; and the repeated block labels keep their explicit
 wording — separating source text from Counterframe's own writing is the central
 promise — but stopped shouting in letterspaced uppercase.
 
+## 11d. Reducing density without deleting substance
+
+Feedback was that the platform reads as text-heavy. It is a reading platform,
+so the answer was not to cut content — it was to stop content arriving all at
+once. Measured first, then fixed the two worst offenders:
+
+| Page | Before | After |
+| --- | --- | --- |
+| Transparency | **24.4 screens**, 3,418 words in one scroll | 5.3 screens, one section at a time |
+| Issue page | 4.9 screens, stance block 623px | 4.6 screens, stance block 363px |
+| Explore | first result 731px down, below the fold | 564px, **above the fold** |
+
+- **Transparency is sectioned.** Panel, edits, decisions, funding, proposals,
+  translations and moderation are now switched rather than stacked. Records are
+  deep-linked from all over the app (`#pd-frame-a` from a framing label,
+  `#rev-005` from an article), so the hash is resolved back to its containing
+  section by id prefix — and `hashchange` is handled as well as mount, because
+  following a hash link while already on the page does not remount the
+  component and would otherwise leave the reader staring at the wrong section.
+- **Annotation provenance folds away.** Evidence, author and revision history
+  are what make an annotation checkable, so they stay — but eleven expanded
+  copies buried the explanations they belonged to. The explanation and the
+  Education link stay open; the rest is one click.
+- **Explore filters collapse.** Seven chip groups pushed the actual results
+  below the fold. The control carries the active-filter count so nothing is
+  hidden silently.
+- **The stance form appears when it becomes relevant.** The reasoning field and
+  privacy choice mean nothing until a stance is picked.
+- Long paragraphs (the panel's contrast reasoning, the issue framing) clamp to
+  two lines with an expander rather than being cut.
+
+One bug this surfaced: **the `hidden` attribute only sets `display: none` at
+user-agent weight**, so any class setting `display` silently defeats it. The
+collapsed filters were fully visible despite `hidden` being set. Fourteen
+places in the app rely on that attribute, so `[hidden] { display: none
+!important }` is now a base rule.
+
 ## 12. Accessibility fixes made during browser verification
 
 These were found by measuring, not by inspection:

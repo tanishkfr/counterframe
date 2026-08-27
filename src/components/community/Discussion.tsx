@@ -70,8 +70,7 @@ export function Discussion({ issue }: { issue: Issue }) {
 
       <Notice>
         Takes and replies require completing both primary articles first. Counterframe records that
-        you reached the end of each article and spent a minimum time with it — it does not, and
-        cannot, verify that you understood them.
+        you reached the end and spent a minimum time with each — not that you understood them.
       </Notice>
 
       {hydrated && (

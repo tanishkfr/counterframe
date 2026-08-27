@@ -42,6 +42,16 @@ svg {
   max-width: 100%;
 }
 
+/*
+ * The `hidden` attribute only sets `display: none` at user-agent weight, so any
+ * class that sets `display` silently defeats it. Several things here are
+ * toggled with `hidden` — comparison panes, tab panels, collapsed filters — so
+ * make the attribute win outright.
+ */
+[hidden] {
+  display: none !important;
+}
+
 input,
 button,
 textarea,

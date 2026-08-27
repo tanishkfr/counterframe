@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { Badge, Disclosure, EmptyState, Notice, StatBlock } from "@/components/primitives";
 import { ContributeForm } from "@/components/transparency/ContributeForm";
@@ -26,8 +27,70 @@ import { can } from "@/lib/auth";
 import { userById } from "@/lib/selectors";
 import { useStore } from "@/lib/store/AppStore";
 
+type Section =
+  | "panel"
+  | "edits"
+  | "decisions"
+  | "funding"
+  | "proposals"
+  | "translations"
+  | "moderation";
+
+const SECTIONS: Array<{ key: Section; label: string }> = [
+  { key: "panel", label: "Editorial panel" },
+  { key: "edits", label: "Edits" },
+  { key: "decisions", label: "Panel decisions" },
+  { key: "funding", label: "Funding" },
+  { key: "proposals", label: "Proposal archive" },
+  { key: "translations", label: "Translations" },
+  { key: "moderation", label: "Moderation record" },
+];
+
+/**
+ * Records are deep-linked from all over the app — a framing label points at
+ * `#pd-frame-a`, an article at `#rev-005`, a lesson at a panel member's id.
+ * Showing one section at a time would break every one of those links, so the
+ * record id is resolved back to the section that contains it.
+ */
+function sectionForHash(hash: string): Section | null {
+  const id = hash.replace(/^#/, "");
+  if (!id) return null;
+  if (SECTIONS.some((s) => s.key === id)) return id as Section;
+  if (id.startsWith("pd-")) return "decisions";
+  if (id.startsWith("rev-")) return "edits";
+  if (id.startsWith("pm-")) return "panel";
+  if (id.startsWith("prop-")) return "proposals";
+  if (id.startsWith("tr-") || id.startsWith("trv-")) return "translations";
+  if (id.startsWith("ma-") || id.startsWith("ap-")) return "moderation";
+  if (id.startsWith("fc-") || id.startsWith("fe-") || id.startsWith("fa-")) return "funding";
+  return null;
+}
+
 export function TransparencyView() {
   const { db, user, voteFundingPriority, hydrated } = useStore();
+  const [section, setSection] = useState<Section>("panel");
+
+  /*
+   * Open the section a deep link points into, then scroll to the record.
+   *
+   * `hashchange` matters as much as mount: following a hash link while already
+   * on this page does not remount the component, so a mount-only effect would
+   * leave the reader on the wrong section staring at nothing.
+   */
+  useEffect(() => {
+    const reveal = () => {
+      const target = sectionForHash(window.location.hash);
+      if (!target) return;
+      setSection(target);
+      const id = window.location.hash.replace(/^#/, "");
+      requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({ block: "start" });
+      });
+    };
+    reveal();
+    window.addEventListener("hashchange", reveal);
+    return () => window.removeEventListener("hashchange", reveal);
+  }, []);
   const consistency = checkLedgerConsistency(db);
   const priorities = fundingPriorityTally(db);
   const core = db.panelMembers.filter((m) => m.kind === "core");
@@ -46,21 +109,24 @@ export function TransparencyView() {
         </p>
       </header>
 
-      <nav aria-label="Transparency sections" className="chip-row" style={{ marginBlockEnd: "var(--s-6)" }}>
-        {(
-          [
-            ["#panel", "Editorial panel"],
-            ["#edits", "Edits"],
-            ["#decisions", "Panel decisions"],
-            ["#funding", "Funding"],
-            ["#proposals", "Proposal archive"],
-            ["#translations", "Translations"],
-            ["#moderation", "Moderation record"],
-          ] as const
-        ).map(([href, label]) => (
-          <Link key={href} href={href} className="chip" style={{ textDecoration: "none" }}>
-            {label}
-          </Link>
+      <nav
+        className="tablist"
+        aria-label="Transparency sections"
+        style={{ marginBlockEnd: "var(--s-6)" }}
+      >
+        {SECTIONS.map((item) => (
+          <button
+            key={item.key}
+            type="button"
+            className="tab"
+            aria-current={section === item.key ? "page" : undefined}
+            onClick={() => {
+              setSection(item.key);
+              history.replaceState(null, "", `#${item.key}`);
+            }}
+          >
+            {item.label}
+          </button>
         ))}
       </nav>
 
@@ -74,7 +140,7 @@ export function TransparencyView() {
       </div>
 
       {/* ------------------------------ panel ------------------------------ */}
-      <section id="panel" style={{ marginBlockEnd: "var(--s-8)" }}>
+      <section id="panel" hidden={section !== "panel"}>
         <div className="section-head">
           <h2>Editorial panel</h2>
           <p className="meta">
@@ -114,7 +180,7 @@ export function TransparencyView() {
       </section>
 
       {/* ------------------------------ edits ------------------------------ */}
-      <section id="edits" style={{ marginBlockEnd: "var(--s-8)" }}>
+      <section id="edits" hidden={section !== "edits"}>
         <div className="section-head">
           <h2>Edits</h2>
           <p className="meta">{db.revisions.length} revisions</p>
@@ -131,7 +197,7 @@ export function TransparencyView() {
       </section>
 
       {/* ---------------------------- decisions ---------------------------- */}
-      <section id="decisions" style={{ marginBlockEnd: "var(--s-8)" }}>
+      <section id="decisions" hidden={section !== "decisions"}>
         <div className="section-head">
           <h2>Panel decisions</h2>
           <p className="meta">{db.panelDecisions.length} recorded</p>
@@ -142,7 +208,7 @@ export function TransparencyView() {
       </section>
 
       {/* ----------------------------- funding ----------------------------- */}
-      <section id="funding" style={{ marginBlockEnd: "var(--s-8)" }}>
+      <section id="funding" hidden={section !== "funding"}>
         <div className="section-head">
           <h2>Funding</h2>
         </div>
@@ -234,7 +300,7 @@ export function TransparencyView() {
       </section>
 
       {/* ---------------------------- proposals ---------------------------- */}
-      <section id="proposals" style={{ marginBlockEnd: "var(--s-8)" }}>
+      <section id="proposals" hidden={section !== "proposals"}>
         <div className="section-head">
           <h2>Issue proposal archive</h2>
           <p className="meta">{db.proposals.length} proposals</p>
@@ -358,7 +424,7 @@ export function TransparencyView() {
       </section>
 
       {/* --------------------------- translations -------------------------- */}
-      <section id="translations" style={{ marginBlockEnd: "var(--s-8)" }}>
+      <section id="translations" hidden={section !== "translations"}>
         <div className="section-head">
           <h2>Translations</h2>
           <p className="meta">{db.translations.length} records</p>
@@ -426,7 +492,7 @@ export function TransparencyView() {
       </section>
 
       {/* ---------------------------- moderation --------------------------- */}
-      <section id="moderation" style={{ marginBlockEnd: "var(--s-8)" }}>
+      <section id="moderation" hidden={section !== "moderation"}>
         <div className="section-head">
           <h2>Moderation record</h2>
           <p className="meta">

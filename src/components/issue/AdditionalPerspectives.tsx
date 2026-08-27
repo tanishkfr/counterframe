@@ -33,9 +33,9 @@ export function AdditionalPerspectives({ issue }: { issue: Issue }) {
       </div>
 
       <p className="meta" style={{ maxWidth: "48rem", marginBlockEnd: "var(--s-5)" }}>
-        Primary, official and civil-society material relevant to this issue. These are not a third
-        and fourth viewpoint and are not required reading for the discussion gate. They are here so
-        that readers can check the two paired reports against the record each was drawing on.
+        Primary, official and civil-society material, here so you can check the two paired reports
+        against the record each was drawing on. Not a third and fourth viewpoint, and not required
+        for the discussion gate.
       </p>
 
       {articles.length === 0 ? (

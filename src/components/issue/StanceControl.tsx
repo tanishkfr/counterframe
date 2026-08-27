@@ -93,7 +93,9 @@ export function StanceControl({ issue }: { issue: Issue }) {
         </p>
       )}
 
-      {hydrated && canVote && (
+      {/* The reasoning field and privacy choice only mean anything once a
+          stance is picked, so they stay out of the way until then. */}
+      {hydrated && canVote && pending && (
         <div style={{ marginBlockStart: "var(--s-4)" }}>
           <div className="field">
             <label className="field-label" htmlFor="stance-reasoning">
