@@ -80,8 +80,17 @@
   --measure: 34rem;
   --shell-max: 84rem;
   --rail-w: 19rem;
-  --radius: 2px;
-  --radius-lg: 4px;
+  /*
+   * Radius carries meaning here, it is not decoration:
+   *   pill    = you can press this (buttons, chips, toggles)
+   *   field   = you can type in this
+   *   surface = this is a container or a label, not a control
+   * Keeping those three distinct means shape alone tells you what a thing
+   * does, before you read it or hover it.
+   */
+  --radius-pill: 999px;
+  --radius-field: 8px;
+  --radius-surface: 3px;
 
   /* motion */
   --dur-fast: 120ms;

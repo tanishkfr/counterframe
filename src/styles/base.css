@@ -106,7 +106,8 @@ p {
   transform: translateY(-160%);
   background: var(--ink);
   color: var(--ink-inverse);
-  padding: var(--s-3) var(--s-4);
+  padding: var(--s-3) var(--s-5);
+  border-radius: var(--radius-pill);
   font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -240,10 +241,16 @@ p {
 
 /* -------------------------------- badges ------------------------------- */
 
+/*
+ * Badges deliberately stay square-cornered. They are information, not
+ * controls, and keeping them visually distinct from the pill-shaped buttons
+ * is what makes the shape language readable at a glance.
+ */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
+  border-radius: var(--radius-surface);
   font-size: var(--step--2);
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -292,14 +299,15 @@ p {
   justify-content: center;
   gap: var(--s-2);
   min-height: 2.5rem;
-  padding: 0.5rem 0.9rem;
+  /* Pills need more horizontal room than rectangles to look intentional. */
+  padding: 0.5rem 1.15rem;
   font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: 0.01em;
   border: 1px solid var(--rule-strong);
   background: var(--surface-raised);
   color: var(--ink);
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   transition:
     background-color var(--dur-fast) var(--ease),
     border-color var(--dur-fast) var(--ease),
@@ -343,6 +351,7 @@ p {
 .btn[data-variant="link"] {
   border: none;
   background: none;
+  border-radius: 0;
   padding: 0;
   min-height: 0;
   color: var(--ink);
@@ -391,7 +400,7 @@ p {
   padding: 0.55rem 0.7rem;
   background: var(--surface-raised);
   border: 1px solid var(--rule-strong);
-  border-radius: var(--radius);
+  border-radius: var(--radius-field);
   color: var(--ink);
   font-size: var(--step-0);
   transition: border-color var(--dur-fast) var(--ease);

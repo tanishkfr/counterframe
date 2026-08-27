@@ -210,6 +210,40 @@ paragraph clamped to two lines with an accessible expander rather than truncated
 and lost. The pane reading surfaces grew from a `100vh - 15rem` cap to a clamped
 `22rem–44rem`, so both columns stay balanced and substantial at any viewport.
 
+## 11b. Shape carries meaning: pills are pressable, squares are not
+
+The original brief listed "excessive pill-shaped controls" among the things to
+avoid. That was overridden on request, so rather than simply rounding
+everything, the radius was turned into a semantic system:
+
+| Token | Value | Used for |
+| --- | --- | --- |
+| `--radius-pill` | `999px` | Buttons, chips, reaction toggles, segmented controls, the skip link |
+| `--radius-field` | `8px` | Inputs, textareas, selects, stance options |
+| `--radius-surface` | `3px` | Badges, the divider verdict, containers |
+
+The payoff is comprehension, not decoration: **round means you can press it,
+square means it is a surface or a label.** Badges deliberately stayed
+square-cornered for exactly this reason — they are information, and rounding
+them would have made them indistinguishable from the buttons beside them.
+
+## 11c. The source byline stopped being five identical badges
+
+Every article header rendered outlet, source type, country, date and author as
+five visually identical badges. Nothing stood out, so nothing was legible at a
+glance and a badge signalled nothing.
+
+It is now a byline: the outlet carries the emphasis, the established facts read
+as plain separated metadata, and **only something that needs attention becomes a
+badge** — an unestablished date, an absent author. A badge in that row now means
+"check this", which is a signal it could not carry when everything was one.
+
+Two related trims: the canonical-link button no longer carries the domain inside
+it (it was 259px wide, a third of the pane), moving it to a screen-reader hint
+that names the destination; and the repeated block labels keep their explicit
+wording — separating source text from Counterframe's own writing is the central
+promise — but stopped shouting in letterspaced uppercase.
+
 ## 12. Accessibility fixes made during browser verification
 
 These were found by measuring, not by inspection:
@@ -223,6 +257,7 @@ These were found by measuring, not by inspection:
 | Closing a dialog focused a detached trigger, silently dropping focus to the body and throwing keyboard users to the top of the page | Falls back to the `main` landmark when the trigger is gone |
 | Headline annotations existed in the data but never rendered, because the headline lives in the pane header rather than the body | Added `AnnotatedHeadline` / `HeadlineAnnotations` |
 | `/favicon.ico` 404'd on every page load | Added `app/icon.svg` using the split-frame wordmark |
+| Metadata separators used `--rule-strong`, a border colour, as text — 1.76:1 | Moved to `--ink-faint`; the same bug existed on the pre-existing `.dot-sep` |
 
 Final measured result: zero WCAG AA contrast failures on the issue, transparency and education
 pages, in both themes, checked against each element's own computed background.

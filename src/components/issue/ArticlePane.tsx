@@ -204,6 +204,9 @@ export function ArticlePane({
         <SourceMetaBar article={article} />
 
         <div className="pane-actions">
+          {/* The domain is transparency, not a label. Keeping it out of the
+              button keeps the control compact and still announces where the
+              link goes to a screen reader. */}
           <a
             className="btn"
             href={article.metadata.canonicalUrl}
@@ -211,8 +214,9 @@ export function ArticlePane({
             rel="noopener noreferrer"
           >
             {t("issue.openOriginal")}
-            <span className="meta" style={{ fontWeight: 400 }}>
-              {hostname(article.metadata.canonicalUrl)}
+            <span aria-hidden="true">↗</span>
+            <span className="sr-only">
+              — opens {hostname(article.metadata.canonicalUrl)} in a new tab
             </span>
           </a>
           <SourceInspector article={article} />

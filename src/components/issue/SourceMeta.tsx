@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState, type ReactNode } from "react";
 
 import { Badge, Notice, RubricMark } from "@/components/primitives";
 import { Modal } from "@/components/primitives/Modal";
@@ -42,28 +42,52 @@ export function Verified<T extends string>({
   );
 }
 
-/** Compact badge row shown under every article headline. */
+/**
+ * The byline under every article headline.
+ *
+ * Established facts read as plain metadata, with the outlet carrying the
+ * emphasis. Only something that needs the reader's attention — an
+ * unestablished date, an absent author — becomes a badge. That way a badge in
+ * this row always means "check this", instead of five identical chips where
+ * nothing stands out.
+ */
 export function SourceMetaBar({ article }: { article: SourceArticle }) {
   const m = article.metadata;
+
+  const facts: ReactNode[] = [
+    <span key="outlet" className="source-meta-outlet">
+      {m.outlet}
+    </span>,
+    <span key="type">{SOURCE_TYPE_LABEL[m.sourceType]}</span>,
+    <span key="country">{m.outletCountry}</span>,
+    m.publishedAt.value ? (
+      <span key="date">{formatDate(m.publishedAt.value)}</span>
+    ) : (
+      <Badge key="date" tone="brass" mark="?">
+        Date not established
+      </Badge>
+    ),
+    m.author.value ? (
+      <span key="author">{m.author.value}</span>
+    ) : (
+      <Badge key="author" tone="brass" mark="?" title={m.author.note}>
+        No named author
+      </Badge>
+    ),
+  ];
+
   return (
     <div className="source-meta">
-      <Badge tone="ink">{m.outlet}</Badge>
-      <Badge>{SOURCE_TYPE_LABEL[m.sourceType]}</Badge>
-      <Badge>{m.outletCountry}</Badge>
-      {m.publishedAt.value ? (
-        <Badge>{formatDate(m.publishedAt.value)}</Badge>
-      ) : (
-        <Badge tone="brass" mark="?">
-          Date not established
-        </Badge>
-      )}
-      {m.author.value ? (
-        <Badge>{m.author.value}</Badge>
-      ) : (
-        <Badge tone="brass" mark="?" title={m.author.note}>
-          No named author
-        </Badge>
-      )}
+      {facts.map((node, index) => (
+        <Fragment key={index}>
+          {index > 0 && (
+            <span className="source-meta-sep" aria-hidden="true">
+              ·
+            </span>
+          )}
+          {node}
+        </Fragment>
+      ))}
     </div>
   );
 }
@@ -75,7 +99,7 @@ export function SourceInspector({ article }: { article: SourceArticle }) {
   return (
     <>
       <button type="button" className="btn" onClick={() => setOpen(true)}>
-        Full source evaluation
+        Source evaluation
       </button>
 
       <Modal

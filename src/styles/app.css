@@ -63,7 +63,7 @@
   color: var(--ink-muted);
   text-decoration: none;
   white-space: nowrap;
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   transition: color var(--dur-fast) var(--ease);
 }
 
@@ -268,7 +268,7 @@
 .dot-sep::before {
   content: "·";
   margin-inline-end: var(--s-2);
-  color: var(--rule-strong);
+  color: var(--ink-faint);
 }
 
 /* tabs */
@@ -384,7 +384,7 @@
   padding: 0.35rem 0.6rem;
   background: var(--surface-raised);
   border: 1px solid var(--rule-strong);
-  border-radius: var(--radius);
+  border-radius: var(--radius-surface);
   font-size: var(--step--2);
   font-weight: 650;
   letter-spacing: 0.09em;
@@ -489,8 +489,20 @@
 .source-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-1) var(--s-2);
   align-items: center;
+  gap: 0.2rem 0.45rem;
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+.source-meta-outlet {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.source-meta-sep {
+  color: var(--ink-faint);
 }
 
 .pane-actions {
@@ -569,12 +581,17 @@
   color: var(--ink-muted);
 }
 
+/*
+ * These labels appear several times per article, so they are kept quiet. The
+ * wording stays explicit — separating source text from Counterframe's own
+ * writing is the product's central promise — but the styling stops competing
+ * with the text it is labelling.
+ */
 .block-label {
   display: block;
   font-size: var(--step--2);
-  font-weight: 650;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.045em;
   color: var(--ink-faint);
   margin-block-end: var(--s-2);
 }
@@ -731,7 +748,7 @@ figure.article-figure figcaption {
   padding: var(--s-3) var(--s-4);
   border: 1px solid var(--rule-strong);
   background: var(--surface-raised);
-  border-radius: var(--radius);
+  border-radius: var(--radius-field);
   transition:
     border-color var(--dur-fast) var(--ease),
     background-color var(--dur-fast) var(--ease);
@@ -1127,9 +1144,9 @@ figure.article-figure figcaption {
   font-size: var(--step--2);
   font-weight: 600;
   letter-spacing: 0.02em;
-  padding: 0.3rem 0.55rem;
+  padding: 0.3rem 0.8rem;
   border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   color: var(--ink-muted);
   background: var(--surface-raised);
   min-height: 2rem;
@@ -1270,12 +1287,12 @@ figure.article-figure figcaption {
   font-size: var(--step--2);
   font-weight: 600;
   letter-spacing: 0.03em;
-  padding: 0.28rem 0.55rem;
+  padding: 0.3rem 0.75rem;
   border: 1px solid var(--rule-strong);
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   color: var(--ink-muted);
   background: var(--surface-raised);
-  min-height: 1.9rem;
+  min-height: 2rem;
   transition: all var(--dur-fast) var(--ease);
 }
 
@@ -1290,7 +1307,7 @@ figure.article-figure figcaption {
 .segmented {
   display: flex;
   border: 1px solid var(--rule-strong);
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   overflow: hidden;
   width: 100%;
 }
@@ -1515,7 +1532,7 @@ figure.article-figure figcaption {
   padding: 0.35rem 0.5rem;
   background: var(--surface-raised);
   border: 1px solid var(--rule-strong);
-  border-radius: var(--radius);
+  border-radius: var(--radius-field);
   max-width: 14rem;
 }
 

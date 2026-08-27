@@ -103,8 +103,9 @@ export function AdditionalPerspectives({ issue }: { issue: Issue }) {
                     rel="noopener noreferrer"
                   >
                     Open original source
-                    <span className="meta" style={{ fontWeight: 400 }}>
-                      {hostname(article.metadata.canonicalUrl)}
+                    <span aria-hidden="true">↗</span>
+                    <span className="sr-only">
+                      — opens {hostname(article.metadata.canonicalUrl)} in a new tab
                     </span>
                   </a>
                   <SourceInspector article={article} />
