@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { IssueRow } from "@/components/issue/IssueRow";
-import { Badge, EmptyState } from "@/components/primitives";
+import { EmptyState } from "@/components/primitives";
 import { emptyFilter, facetValues, filterIssues } from "@/lib/selectors";
 import { SOURCE_TYPE_LABEL } from "@/lib/labels";
 import { useStore } from "@/lib/store/AppStore";
@@ -274,15 +273,5 @@ export function ExploreView() {
         </p>
       </section>
     </div>
-  );
-}
-
-export function IssueHero({ src, alt }: { src: string; alt: string }) {
-  return <Image src={src} alt={alt} width={640} height={480} />;
-}
-
-export function StatusBadge({ status }: { status: IssueStatus }) {
-  return (
-    <Badge tone={status === "active" ? "olive" : "brass"}>{status.replace(/-/g, " ")}</Badge>
   );
 }

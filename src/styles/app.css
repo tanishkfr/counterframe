@@ -1506,8 +1506,45 @@ figure.article-figure figcaption {
   }
 }
 
-.pane[data-active="true"] .pane-head {
+/*
+ * Which pane is "active" decides where reading time accrues, and reading time
+ * gates posting. A hairline border colour was not enough to carry that: a
+ * reader whose timer was not advancing had no way to tell why. The active
+ * column now states it in words.
+ */
+.pane[data-active="true"] .pane-banner {
   border-block-end-color: var(--rust);
+  border-block-end-width: 2px;
+  padding-block-end: calc(var(--s-3) - 1px);
+}
+
+.pane-timing {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: var(--step--2);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.pane-timing[data-counting="true"] {
+  color: var(--rust);
+}
+
+.pane-timing::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  flex: none;
+}
+
+.pane-timing[data-counting="true"]::before {
+  background: currentColor;
 }
 
 .reading-strip {

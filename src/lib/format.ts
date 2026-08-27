@@ -60,24 +60,6 @@ export function formatPercent(fraction: number): string {
   return `${Math.round(fraction * 100)}%`;
 }
 
-/**
- * Relative time against a caller-supplied "now". Callers pass a stable value
- * rather than reading the clock here, so server output never disagrees with
- * the first client render.
- */
-export function formatRelative(iso: string, now: number): string {
-  const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return "—";
-  const diffDays = Math.floor((now - then) / 86_400_000);
-  if (diffDays < 1) return "Today";
-  if (diffDays === 1) return "Yesterday";
-  if (diffDays < 30) return `${diffDays} days ago`;
-  const months = Math.floor(diffDays / 30);
-  if (months < 12) return months === 1 ? "1 month ago" : `${months} months ago`;
-  const years = Math.floor(months / 12);
-  return years === 1 ? "1 year ago" : `${years} years ago`;
-}
-
 export function formatDuration(ms: number): string {
   const seconds = Math.round(ms / 1000);
   if (seconds < 60) return `${seconds}s`;

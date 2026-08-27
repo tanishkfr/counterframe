@@ -52,7 +52,7 @@ export const issues: Issue[] = [
     slug: "transit-fare-increase-coverage-2021",
     title: "How was the 2021 metropolitan transit fare increase reported?",
     summary:
-      "An archived issue. The panel published it in 2026 and closed it after concluding that the two selected sources converged rather than contrasted: both reported the same figures, both quoted the transit authority and both quoted riders. It is kept readable as a worked example of a pairing that did not hold up, and of the platform declining to manufacture an opposition.",
+      "An archived issue, kept as a worked example of a pairing that did not hold up. The panel opened it in 2026 and closed it after concluding that the two candidate sources converged rather than contrasted: both reported the same figures, both quoted the transit authority and both quoted riders. Because the pairing never published, no source records were licensed or retained, so there are no articles to read here. What is preserved is the decision and the reasoning behind it, in the History tab. That is the point of the example: the platform declined to manufacture an opposition, and says so rather than quietly dropping the issue.",
     status: "archived",
     countries: ["Canada"],
     region: "North America",
@@ -65,7 +65,7 @@ export const issues: Issue[] = [
     viewpointB: { articleIds: [], label: "Viewpoint B" },
     additionalPerspectiveIds: [],
     contrastRationale:
-      "The panel labelled this pairing 'Converging'. The two reports agreed on figures, sourcing and framing. Rather than present agreement as disagreement, the issue was archived with this explanation attached. Archived issues remain readable and may still receive corrections through the ordinary revision process.",
+      "The panel labelled this pairing 'Converging'. The two candidate reports agreed on figures, sourcing and framing. Rather than present agreement as disagreement, the issue was archived with this explanation attached and the sources were never taken up. The decision record remains open to correction through the ordinary revision process, as every archived issue does.",
     contrastVerdict: "converging",
   },
 ];

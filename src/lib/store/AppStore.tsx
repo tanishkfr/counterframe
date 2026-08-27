@@ -35,7 +35,13 @@ import type {
   Translation,
   User,
 } from "../types";
-import { nextState } from "../reading";
+import {
+  applyModerationAction,
+  castStance,
+  completeReading,
+  mergeReadingProgress,
+  toggleReaction as toggleReactionIn,
+} from "./mutations";
 import {
   clearAll,
   defaultPreferences,
@@ -236,40 +242,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const recordReading = useCallback(
     (articleId: string, patch: Partial<ReadingProgress>) => {
       if (!user) return;
-      setDb((prev) => {
-        const existing = prev.readingProgress.find(
-          (p) => p.userId === user.id && p.articleId === articleId,
-        );
-        const base: ReadingProgress = existing ?? {
-          userId: user.id,
-          articleId,
-          state: "not-started",
-          furthestFraction: 0,
-          dwellMs: 0,
-          reachedEnd: false,
-          startedAt: new Date().toISOString(),
-        };
-        const merged: ReadingProgress = {
-          ...base,
-          ...patch,
-          // Progress is monotonic: it records the furthest point reached, not
-          // the current scroll position, so scrolling back never undoes it.
-          furthestFraction: Math.max(base.furthestFraction, patch.furthestFraction ?? 0),
-          dwellMs: base.dwellMs + (patch.dwellMs ?? 0),
-          reachedEnd: base.reachedEnd || Boolean(patch.reachedEnd),
-          lastSeenAt: new Date().toISOString(),
-        };
-        merged.state = nextState(merged);
-        return {
-          ...prev,
-          readingProgress: [
-            ...prev.readingProgress.filter(
-              (p) => !(p.userId === user.id && p.articleId === articleId),
-            ),
-            merged,
-          ],
-        };
-      });
+      const now = new Date().toISOString();
+      setDb((prev) => mergeReadingProgress(prev, user.id, articleId, patch, { now }));
     },
     [user],
   );
@@ -278,37 +252,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     (articleId: string, requiredDwellMs: number) => {
       if (!user) return;
       const now = new Date().toISOString();
-      setDb((prev) => {
-        const progress = prev.readingProgress.find(
-          (p) => p.userId === user.id && p.articleId === articleId,
-        );
-        if (!progress) return prev;
-        const completed: ReadingProgress = {
-          ...progress,
-          state: "completed",
-          completedAt: now,
-          furthestFraction: 1,
-          reachedEnd: true,
-        };
-        return {
-          ...prev,
-          readingProgress: prev.readingProgress.map((p) =>
-            p.userId === user.id && p.articleId === articleId ? completed : p,
-          ),
-          completions: [
-            ...prev.completions.filter(
-              (c) => !(c.userId === user.id && c.articleId === articleId),
-            ),
-            {
-              userId: user.id,
-              articleId,
-              completedAt: now,
-              dwellMsAtCompletion: progress.dwellMs,
-              requiredDwellMs,
-            },
-          ],
-        };
-      });
+      setDb((prev) => completeReading(prev, user.id, articleId, requiredDwellMs, { now }));
       announce("Article marked as read.");
     },
     [user, announce],
@@ -319,39 +263,10 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const setStance = useCallback(
     (issueId: string, stance: Stance, reasoning: string, publicProfile: boolean) => {
       if (!user) return;
-      const now = new Date().toISOString();
-      setDb((prev) => {
-        const existing = prev.stanceVotes.find(
-          (v) => v.issueId === issueId && v.userId === user.id,
-        );
-        const change = {
-          id: id("sc"),
-          issueId,
-          userId: user.id,
-          from: existing?.stance ?? null,
-          to: stance,
-          at: now,
-          reasoning: reasoning || undefined,
-        };
-        const vote = {
-          id: existing?.id ?? id("sv"),
-          issueId,
-          userId: user.id,
-          stance,
-          reasoning: reasoning || undefined,
-          updatedAt: now,
-          publicProfile,
-        };
-        return {
-          ...prev,
-          // One current vote per account per issue.
-          stanceVotes: [
-            ...prev.stanceVotes.filter((v) => !(v.issueId === issueId && v.userId === user.id)),
-            vote,
-          ],
-          stanceChanges: [...prev.stanceChanges, change],
-        };
-      });
+      const clock = { now: new Date().toISOString(), id };
+      setDb((prev) =>
+        castStance(prev, { issueId, userId: user.id, stance, reasoning, publicProfile }, clock),
+      );
       announce("Your stance was recorded. You can change it at any time.");
     },
     [user, announce],
@@ -451,21 +366,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const toggleReaction = useCallback(
     (targetId: string, kind: ReactionKind) => {
       if (!user) return;
-      setDb((prev) => {
-        const existing = prev.reactions.find(
-          (r) => r.targetId === targetId && r.userId === user.id && r.kind === kind,
-        );
-        if (existing) {
-          return { ...prev, reactions: prev.reactions.filter((r) => r.id !== existing.id) };
-        }
-        return {
-          ...prev,
-          reactions: [
-            ...prev.reactions,
-            { id: id("rx"), targetId, userId: user.id, kind, at: new Date().toISOString() },
-          ],
-        };
-      });
+      const clock = { now: new Date().toISOString(), id };
+      setDb((prev) => toggleReactionIn(prev, targetId, user.id, kind, clock));
     },
     [user],
   );
@@ -511,68 +413,17 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       reason: string,
     ) => {
       if (!user) return;
-      const now = new Date().toISOString();
-      const stateFor: Partial<Record<ModerationActionKind, CommunityTake["moderationState"]>> = {
-        approve: "published",
-        "mark-safe": "published",
-        "temporarily-hide": "temporarily-hidden",
-        remove: "removed",
-        restore: "restored",
-        "request-edits": "edits-requested",
-        escalate: "under-review",
-      };
-      const nextModerationState = stateFor[kind];
-
-      setDb((prev) => ({
-        ...prev,
-        takes:
-          targetType === "take"
-            ? prev.takes.map((t) =>
-                t.id === targetId && nextModerationState
-                  ? { ...t, moderationState: nextModerationState, moderationReason: reason }
-                  : t,
-              )
-            : prev.takes,
-        replies:
-          targetType === "reply"
-            ? prev.replies.map((r) =>
-                r.id === targetId && nextModerationState
-                  ? { ...r, moderationState: nextModerationState, moderationReason: reason }
-                  : r,
-              )
-            : prev.replies,
-        moderationActions: [
-          ...prev.moderationActions,
-          {
-            id: id("ma"),
-            targetId,
-            targetType,
-            moderatorId: user.id,
-            kind,
-            reason,
-            at: now,
-            flagId: prev.flags.find((f) => f.targetId === targetId && f.status === "open")?.id,
-            predictionId: prev.predictions.find((p) => p.targetId === targetId)?.id,
-          },
-        ],
-        flags: prev.flags.map((f) =>
-          f.targetId === targetId && kind !== "escalate" ? { ...f, status: "resolved" } : f,
+      const clock = { now: new Date().toISOString(), id };
+      setDb((prev) =>
+        applyModerationAction(
+          prev,
+          { targetId, targetType, kind, reason, moderatorId: user.id },
+          clock,
         ),
-        auditLog: [
-          ...prev.auditLog,
-          audit({
-            actorId: user.id,
-            actorRole: "moderator",
-            action: `moderation.${kind}`,
-            targetType,
-            targetId,
-            detail: reason,
-          }),
-        ],
-      }));
+      );
       announce(`Moderation action recorded: ${kind.replace(/-/g, " ")}.`);
     },
-    [user, announce, audit],
+    [user, announce],
   );
 
   const submitAppeal = useCallback(

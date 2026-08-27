@@ -22,7 +22,7 @@ const STATUS_NOTE = {
   "under-review":
     "This issue is under panel review and is not yet published as a comparison. It is visible so readers can see what an issue looks like before publication.",
   archived:
-    "This issue is archived. It remains readable, and can still receive corrections and metadata revisions through the ordinary transparent process.",
+    "This issue is archived. Its record, decisions and history stay open and can still receive corrections and metadata revisions through the ordinary transparent process. Whether it carries readable articles depends on whether sources were ever taken up — the comparison area below says which.",
 } as const;
 
 export function useIssue(slug: string): Issue | undefined {

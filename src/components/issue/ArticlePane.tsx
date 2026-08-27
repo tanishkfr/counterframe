@@ -184,6 +184,11 @@ export function ArticlePane({
       <div className="pane-banner">
         <span className="pane-banner-label">{viewpointLabel}</span>
         <div className="pane-banner-marks">
+          {hydrated && user && progress.state !== "completed" && (
+            <span className="pane-timing" data-counting={active}>
+              {active ? "Timing" : "Paused"}
+            </span>
+          )}
           <FrameBadge label={article.frameLabel.label} />
           {hydrated && user && <ReadingBadge state={progress.state} />}
           {article.editorialStatus === "corrected" && <Badge tone="brass">Corrected</Badge>}
@@ -332,6 +337,7 @@ export function ArticlePane({
           dwellMs={status.dwellMs}
           requiredMs={requiredMs}
           wordCount={article.wordCount}
+          active={active}
           signedIn={Boolean(user)}
           hydrated={hydrated}
           onComplete={() => completeArticle(article.id, requiredMs)}
@@ -396,6 +402,7 @@ function Checkpoint({
   dwellMs,
   requiredMs,
   wordCount,
+  active,
   signedIn,
   hydrated,
   onComplete,
@@ -408,6 +415,7 @@ function Checkpoint({
   dwellMs: number;
   requiredMs: number;
   wordCount: number;
+  active: boolean;
   signedIn: boolean;
   hydrated: boolean;
   onComplete: () => void;
@@ -466,6 +474,14 @@ function Checkpoint({
           {blockedReason}
         </p>
       ) : null}
+
+      {!unlocked && (
+        <p className="meta" style={{ marginBlockStart: "var(--s-2)" }}>
+          {active
+            ? "Time is counting for this article while it is the one you are reading."
+            : "Time is not counting here — it is counting for the other article. Scroll or click this one to move it over."}
+        </p>
+      )}
 
       <button
         type="button"

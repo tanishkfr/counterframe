@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { Badge, StanceBadge } from "@/components/primitives";
 import { formatDate } from "@/lib/format";
-import { STANCE_SHORT } from "@/lib/labels";
 import { hasCompletedAll } from "@/lib/reading";
 import {
   byId,
@@ -138,13 +137,4 @@ export function IssueRow({ issue }: { issue: Issue }) {
       </div>
     </li>
   );
-}
-
-export function StanceSnapshotLabel({ issueId }: { issueId: string }) {
-  const { db } = useStore();
-  const d = stanceDistribution(db, issueId);
-  const leading = (["supports", "criticises", "undecided"] as const).reduce((best, stance) =>
-    d.counts[stance] > d.counts[best] ? stance : best,
-  );
-  return <span>{STANCE_SHORT[leading]}</span>;
 }

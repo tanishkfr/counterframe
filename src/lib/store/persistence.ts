@@ -9,7 +9,18 @@ import type { Database, LanguageCode, Session } from "../types";
  * API client means implementing the same four functions.
  */
 
-export const DB_KEY = "counterframe.db.v1";
+/*
+ * Bump this whenever seeded CONTENT changes in a way readers must see.
+ *
+ * The stored database is a full snapshot, so a browser that has run an older
+ * build keeps that build's seed forever. That is right for a reader's own
+ * takes and progress, but wrong for a correction: the archived issue used to
+ * claim it was "kept readable" when it has no articles, and leaving that
+ * stale copy in place would be exactly the overclaiming this platform is
+ * about. Changing the key re-seeds; the cost is that local demo state resets,
+ * which is acceptable for a classroom prototype.
+ */
+export const DB_KEY = "counterframe.db.v2";
 export const SESSION_KEY = "counterframe.session.v1";
 export const PREFS_KEY = "counterframe.prefs.v1";
 
