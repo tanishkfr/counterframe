@@ -9,3 +9,10 @@ onlyBuiltDependencies:
   - esbuild
   - sharp
   - unrs-resolver
+
+# postcss and sharp arrive transitively through Next.js on versions carrying
+# published advisories. Overrides are the only way to lift them, and pnpm 10+
+# reads them from here rather than from package.json.
+overrides:
+  postcss: '>=8.5.23'
+  sharp: '>=0.35.0'
