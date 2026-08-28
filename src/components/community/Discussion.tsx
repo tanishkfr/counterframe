@@ -219,6 +219,8 @@ function TakeComposer({
             label: evidenceLabel.trim() || hostname(evidenceUrl),
             url: evidenceUrl.trim(),
             kind: "related-coverage",
+            // A reader-supplied link: we have not established its date.
+            date: null,
             verification: "needs-verification",
           },
         ]

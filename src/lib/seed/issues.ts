@@ -182,6 +182,7 @@ export const revisions: Revision[] = [
     at: "2026-03-02T11:30:00.000Z",
     approval: "approved",
     panelDecisionId: "pd-proposal-delhi",
+    evidence: [],
   },
   {
     id: "rev-002",
@@ -203,6 +204,7 @@ export const revisions: Revision[] = [
     reason: "Required before the article can be shown in a comparison pane.",
     at: "2026-03-05T10:00:00.000Z",
     approval: "approved",
+    evidence: [],
   },
   {
     id: "rev-003",
@@ -226,6 +228,7 @@ export const revisions: Revision[] = [
       "Eli Brandt objected that the original note read as an accusation against the journalist. The panel agreed the caveat was necessary and that the note as written invited the inference we tell readers to avoid.",
     at: "2026-03-07T15:20:00.000Z",
     approval: "approved",
+    evidence: [],
   },
   {
     id: "rev-004",
@@ -244,6 +247,7 @@ export const revisions: Revision[] = [
     at: "2026-03-09T09:35:00.000Z",
     approval: "approved",
     panelDecisionId: "pd-frame-a",
+    evidence: [],
   },
   {
     id: "rev-005",
@@ -270,6 +274,26 @@ export const revisions: Revision[] = [
     at: "2026-05-18T14:30:00.000Z",
     approval: "approved",
     panelDecisionId: "pd-correction-1",
+    evidence: [
+      {
+        id: "ev-rev005-1",
+        label:
+          "Housing and Land Rights Network — 'Forced Evictions in India 2022 and 2023', where the Delhi figure actually originates",
+        url: "https://hlrn.org.in/documents/Press_Release_Forced_Evictions_2022_2023.pdf",
+        kind: "report",
+        date: "2024-03-07",
+        verification: "needs-verification",
+      },
+      {
+        id: "ev-rev005-2",
+        label:
+          "The Down To Earth report itself, re-read in full to confirm the figure does not appear in it",
+        url: "https://www.downtoearth.org.in/governance/g20-and-delhi-slum-dwellers-rendered-homeless-as-city-decks-up-for-summit-89252",
+        kind: "related-coverage",
+        date: "2023-05-11",
+        verification: "verified",
+      },
+    ],
   },
   {
     id: "rev-006",
@@ -290,6 +314,7 @@ export const revisions: Revision[] = [
     reason: "Required before the article can be shown in a comparison pane.",
     at: "2026-03-05T10:20:00.000Z",
     approval: "approved",
+    evidence: [],
   },
   {
     id: "rev-007",
@@ -308,6 +333,7 @@ export const revisions: Revision[] = [
     at: "2026-03-09T10:20:00.000Z",
     approval: "approved",
     panelDecisionId: "pd-frame-b",
+    evidence: [],
   },
   {
     id: "rev-008",
@@ -329,6 +355,7 @@ export const revisions: Revision[] = [
     reason: "Primary-source perspective required for the issue to be publishable.",
     at: "2026-03-08T09:00:00.000Z",
     approval: "approved",
+    evidence: [],
   },
   {
     id: "rev-009",
@@ -343,6 +370,7 @@ export const revisions: Revision[] = [
     reason: "Civil-society perspective required for the issue to be publishable.",
     at: "2026-03-08T09:30:00.000Z",
     approval: "approved",
+    evidence: [],
   },
   {
     id: "rev-010",
@@ -366,6 +394,7 @@ export const revisions: Revision[] = [
     at: "2026-05-18T15:00:00.000Z",
     approval: "approved",
     panelDecisionId: "pd-correction-1",
+    evidence: [],
   },
   {
     id: "rev-011",
@@ -389,6 +418,7 @@ export const revisions: Revision[] = [
       "'False impression' asserts intent we cannot establish. The annotation should describe the construction, not attribute a motive.",
     at: "2026-04-14T11:00:00.000Z",
     approval: "approved",
+    evidence: [],
   },
   {
     id: "rev-012",
@@ -411,6 +441,7 @@ export const revisions: Revision[] = [
       "Readers were finding the Viewpoint B annotations harsher than the Viewpoint A ones. Making the symmetry explicit addresses that without softening either.",
     at: "2026-04-14T11:20:00.000Z",
     approval: "approved",
+    evidence: [],
   },
   {
     id: "rev-013",
@@ -432,6 +463,7 @@ export const revisions: Revision[] = [
     at: "2026-03-16T09:00:00.000Z",
     approval: "approved",
     panelDecisionId: "pd-funding-delhi",
+    evidence: [],
   },
   {
     id: "rev-014",
@@ -449,6 +481,7 @@ export const revisions: Revision[] = [
     at: "2026-06-11T08:50:00.000Z",
     approval: "approved",
     panelDecisionId: "pd-translation-hi",
+    evidence: [],
   },
   {
     id: "rev-015",
@@ -468,5 +501,6 @@ export const revisions: Revision[] = [
     reason: "The issue is used as a teaching case in the Education hub and was not discoverable under that tag.",
     at: "2026-08-14T16:10:00.000Z",
     approval: "approved",
+    evidence: [],
   },
 ];

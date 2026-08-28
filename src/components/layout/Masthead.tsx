@@ -32,6 +32,7 @@ export function Mark({ className = "mark" }: { className?: string }) {
 
 const NAV: Array<{ href: string; key: UiKey }> = [
   { href: "/explore", key: "nav.explore" },
+  { href: "/changes", key: "nav.changes" },
   { href: "/education", key: "nav.education" },
   { href: "/my-reading", key: "nav.myReading" },
   { href: "/community", key: "nav.community" },

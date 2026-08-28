@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Badge, FrameBadge, StatBlock } from "@/components/primitives";
+import { recentDevelopments } from "@/lib/changes";
 import { formatDate, formatMoney } from "@/lib/format";
 import { platformFunding } from "@/lib/funding";
 import { articlesFor, byId, debateCount, stanceDistribution } from "@/lib/selectors";
@@ -13,6 +14,7 @@ export function HomeView() {
   const { db } = useStore();
   const featured = db.issues.find((i) => i.status === "active") ?? db.issues[0];
   const funding = platformFunding(db);
+  const developments = recentDevelopments(db, 4);
   const lessons = db.education.filter((e) => e.status === "published" && e.kind !== "glossary").slice(0, 3);
 
   if (!featured) return null;
@@ -167,6 +169,36 @@ export function HomeView() {
               </div>
             ))}
           </div>
+        )}
+      </section>
+
+      <hr className="rule" />
+
+      {/* A buffer against the change log: a returning reader wants the few
+          things that moved, not the archive. */}
+      <section aria-labelledby="changed-heading" style={{ paddingBlock: "var(--s-7)" }}>
+        <div className="section-head">
+          <h2 id="changed-heading">What changed</h2>
+          <Link href="/changes" className="meta">
+            Everything, by day →
+          </Link>
+        </div>
+        {developments.length === 0 ? (
+          <p className="meta">Nothing has changed on the platform yet.</p>
+        ) : (
+          <ul className="change-list">
+            {developments.map((event) => (
+              <li key={`${event.kind}-${event.id}`} className="change" data-significance="major">
+                <span className="change-kind">{formatDate(event.at)}</span>
+                <div>
+                  <p className="change-title">
+                    {event.href ? <Link href={event.href}>{event.title}</Link> : event.title}
+                  </p>
+                  <p className="change-detail">{event.detail}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
 

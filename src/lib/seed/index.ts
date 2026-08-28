@@ -1,5 +1,6 @@
 import type { Database } from "../types";
 import { annotations, articles } from "./articles";
+import { anonymousSources, sponsorship } from "./disclosures";
 import * as community from "./community";
 import { education, educationSuggestions } from "./education";
 import * as funding from "./funding";
@@ -41,6 +42,8 @@ export function createSeedDatabase(): Database {
     educationSuggestions,
     auditLog: community.auditLog,
     savedIssues: community.savedIssues,
+    anonymousSources,
+    sponsorship,
   };
   return structuredClone(db);
 }

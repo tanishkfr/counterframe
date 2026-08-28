@@ -191,12 +191,67 @@ export interface ArticleImage {
   caption: string;
 }
 
+/**
+ * Evidence attached to a claim. The published rules require four things of
+ * every major claim — source, evidence type, date, verification status — and
+ * this is the shape that carries them. `date` is nullable rather than optional
+ * so an unestablished date is a stated fact rather than a missing field.
+ */
 export interface EvidenceLink {
   id: string;
   label: string;
+  /** The source. */
   url: string;
+  /** The evidence type. */
   kind: "primary-document" | "dataset" | "report" | "related-coverage";
+  /** The date of the evidence itself, or null when it could not be established. */
+  date: string | null;
   verification: VerificationState;
+}
+
+/**
+ * Recorded when a compared article rests on a source it does not name.
+ *
+ * Counterframe does not do original reporting, so this is not a promise about
+ * our own sourcing — it is an observation about someone else's, made
+ * consistently rather than left to prose. We cannot make an outlet justify its
+ * anonymous sourcing; we can record whether it did.
+ */
+export interface AnonymousSourceDisclosure {
+  id: string;
+  articleId: string;
+  /** How the source appears in the text, quoted verbatim. */
+  descriptor: string;
+  /** The reason the outlet gave for anonymity, or null when it gave none. */
+  reasonGiven: string | null;
+  /** What kind of source the text establishes them to be. */
+  sourceKind:
+    | "government-or-official"
+    | "corporate"
+    | "civil-society"
+    | "resident-or-affected"
+    | "expert"
+    | "unstated";
+  /** Whether the claim is corroborated by another identifiable source. */
+  corroboration: "independent-corroboration" | "single-source" | "not-established";
+  note: string;
+  recordedBy: string;
+  recordedAt: string;
+}
+
+/**
+ * A standing declaration about money that could influence editorial judgement.
+ * Published whether or not any relationship exists, because "we have no
+ * sponsors" is only meaningful if it is stated in the same place a sponsor
+ * would have to be.
+ */
+export interface SponsorshipDisclosure {
+  id: string;
+  kind: "sponsorship" | "advertising" | "partnership" | "grant";
+  /** False is the informative case: it is an explicit denial, not silence. */
+  present: boolean;
+  statement: string;
+  reviewedAt: string;
 }
 
 export interface SourceFrameLabel {
@@ -483,6 +538,7 @@ export interface Revision {
   issueId?: string;
   articleId?: string;
   summary: string;
+  /** Original and corrected values, field by field. */
   changes: RevisionChange[];
   editorId: string;
   editorRole: Role;
@@ -490,6 +546,12 @@ export interface Revision {
   at: string;
   approval: "approved" | "pending" | "auto";
   panelDecisionId?: string;
+  /**
+   * What established the change. Required on corrections by the published
+   * rules, and asserted in `rules.test.ts` — a correction that cannot show
+   * what prompted it is an assertion, not a correction.
+   */
+  evidence: EvidenceLink[];
 }
 
 /* -------------------------------- funding ------------------------------- */
@@ -776,4 +838,6 @@ export interface Database {
   educationSuggestions: EducationSuggestion[];
   auditLog: AuditLog[];
   savedIssues: SavedIssue[];
+  anonymousSources: AnonymousSourceDisclosure[];
+  sponsorship: SponsorshipDisclosure[];
 }

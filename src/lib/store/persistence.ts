@@ -20,7 +20,7 @@ import type { Database, LanguageCode, Session } from "../types";
  * about. Changing the key re-seeds; the cost is that local demo state resets,
  * which is acceptable for a classroom prototype.
  */
-export const DB_KEY = "counterframe.db.v2";
+export const DB_KEY = "counterframe.db.v3";
 export const SESSION_KEY = "counterframe.session.v1";
 export const PREFS_KEY = "counterframe.prefs.v1";
 

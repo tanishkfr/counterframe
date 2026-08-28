@@ -164,8 +164,17 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const announceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    /*
+     * Merge the stored snapshot over a fresh seed rather than replacing it.
+     *
+     * The snapshot is a whole database, so a build that adds a collection
+     * leaves every existing browser holding a shape that is missing it — and
+     * the first component to map over the absent array crashes. Layering the
+     * stored data on top of the seed means new collections arrive with their
+     * defaults while the reader keeps their own progress, takes and votes.
+     */
     const stored = loadDatabase();
-    if (stored) setDb(stored);
+    if (stored) setDb({ ...createSeedDatabase(), ...stored });
     const storedSession = loadSession();
     setSession(isSessionValid(storedSession, Date.now()) ? storedSession : null);
     setPrefsState(loadPreferences());

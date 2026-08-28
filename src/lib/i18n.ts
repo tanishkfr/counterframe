@@ -17,6 +17,7 @@ export const LANGUAGES: Array<{ code: LanguageCode; label: string; endonym: stri
 
 const en = {
   "nav.explore": "Explore",
+  "nav.changes": "What changed",
   "nav.education": "Education",
   "nav.myReading": "My reading",
   "nav.community": "Community",
@@ -85,6 +86,7 @@ export type UiKey = keyof typeof en;
 
 const hi: Partial<Record<UiKey, string>> = {
   "nav.explore": "खोजें",
+  "nav.changes": "क्या बदला",
   "nav.education": "शिक्षा",
   "nav.myReading": "मेरा पठन",
   "nav.community": "समुदाय",

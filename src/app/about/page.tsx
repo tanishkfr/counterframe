@@ -1,10 +1,15 @@
 import Link from "next/link";
 
+import {
+  PublishingRules,
+  SponsorshipDeclarations,
+} from "@/components/transparency/PublishingRules";
+
 export const metadata = { title: "About" };
 
 export default function AboutPage() {
   return (
-    <div className="shell page" style={{ maxWidth: "46rem" }}>
+    <div className="shell page" style={{ maxWidth: "52rem" }}>
       <header className="page-head">
         <p className="eyebrow">About</p>
         <h1 className="display">What Counterframe is</h1>
@@ -15,7 +20,7 @@ export default function AboutPage() {
         </p>
       </header>
 
-      <div className="prose" style={{ maxWidth: "none" }}>
+      <div className="prose" style={{ maxWidth: "46rem" }}>
         <p>
           Counterframe does not tell you which account is correct. It is built on the belief that
           the useful skill is not knowing which outlet to trust, but being able to see what a piece
@@ -29,7 +34,23 @@ export default function AboutPage() {
           Where Counterframe has an opinion, it says so, signs it, and records what it used to be
           before it changed.
         </p>
+        <p>
+          That is easy to assert and hard to hold to, so the rules below are published rather than
+          merely followed. Each one is checked against live data — you can see for yourself whether
+          the platform is currently keeping it.
+        </p>
+      </div>
 
+      {/* The rules are the highest-leverage thing on this page: publishing them
+          is what lets a reader hold the platform to a standard rather than
+          taking its word. They belong near the top, not in a footnote. */}
+      <div style={{ marginBlockStart: "var(--s-7)" }}>
+        <PublishingRules />
+      </div>
+
+      <SponsorshipDeclarations />
+
+      <div className="prose" style={{ maxWidth: "46rem", marginBlockStart: "var(--s-8)" }}>
         <h3 id="sources">Source policy</h3>
         <p>
           The source articles on this platform are real. Outlet, author, publication date, source
@@ -92,9 +113,10 @@ export default function AboutPage() {
         <h3 id="next">Where to start</h3>
         <p>
           Open the <Link href="/explore">current issue</Link>, read both panes, turn on the
-          annotation layer, then open the transparency record and see who decided what. If you would
-          rather start with method, the <Link href="/education">Education hub</Link> teaches the
-          reading skills first.
+          annotation layer, then open the transparency record and see who decided what. If you are
+          returning and only want to know what moved, <Link href="/changes">what changed</Link>{" "}
+          ranks developments above housekeeping. If you would rather start with method, the{" "}
+          <Link href="/education">Education hub</Link> teaches the reading skills first.
         </p>
       </div>
     </div>

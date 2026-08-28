@@ -66,6 +66,7 @@ hash would be worse than being clear that this is not security. Never put a real
 | --- | --- |
 | `/` | Statement of purpose and the current issue |
 | `/explore` | Issue feed with search and filters |
+| `/changes` | **What changed** — the record ranked, developments above housekeeping |
 | `/issues/[slug]` | **The comparison workspace** — two panes, stance control, additional perspectives, transparency rail |
 | `/issues/[slug]/community` | Discussion for that issue |
 | `/issues/[slug]/history` | Corrections, revisions with before/after diffs, panel decisions |
@@ -81,7 +82,7 @@ hash would be worse than being clear that this is not security. Never put a real
 | `/panel` | Panel queue — proposals, translation review, appeals (panel only) |
 | `/moderation` | Review queue with model predictions (moderator only) |
 | `/admin` | Roles, ledger integrity, audit log, demo reset (admin only) |
-| `/about` | What this is, source policy, what is fictional |
+| `/about` | Publishing rules that check themselves, source policy, what is fictional |
 | `/auth/login`, `/auth/signup` | Local demo auth |
 
 Deep links work for issues, history entries (`#rev-005`), panel decisions (`#pd-frame-a`),
@@ -123,6 +124,9 @@ why, and for how the platform separates quoted source text from Counterframe's o
   prediction type that could express removal.
 - **Ledger consistency.** `checkLedgerConsistency` is asserted in tests *and* surfaced live on the
   admin page, so a broken ledger is visible rather than silent.
+- **The published rules.** `src/lib/rules.ts` computes compliance with each rule on About from live
+  data, and `rules.test.ts` fails the build if the seeded record breaks one — so the page cannot
+  claim a rule the platform is not keeping.
 
 ---
 
@@ -134,7 +138,7 @@ Run at the final commit:
 | --- | --- |
 | `pnpm typecheck` | Clean |
 | `pnpm lint` | Clean |
-| `pnpm test` | 62 tests across 5 files, all passing |
+| `pnpm test` | 118 tests across 8 files, all passing |
 | `pnpm build` | Clean, 18 pages prerendered |
 
 Manually verified in the browser (see PRODUCT-DECISIONS for the bugs this found and fixed):

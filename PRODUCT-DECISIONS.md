@@ -281,6 +281,70 @@ collapsed filters were fully visible despite `hidden` being set. Fourteen
 places in the app rely on that attribute, so `[hidden] { display: none
 !important }` is now a base rule.
 
+## 11e. Rules as a leverage point, and a buffer against the change log
+
+Two interventions from Meadows' leverage-points framing: a **buffer** against
+information overload, and **published rules**, which sit far higher in the
+hierarchy because they let readers hold the platform to a standard instead of
+taking its word.
+
+### The rules are computed, not written
+
+`/about` publishes four rules — evidenced claims, complete corrections,
+recorded anonymous sources, declared commercial relationships — and each one
+**checks itself against live data** (`src/lib/rules.ts`). The page shows Met or
+Unmet per rule, and names the specific records that break one.
+
+This was the whole design constraint: **publishing a rule the system does not
+enforce is the same overclaim this platform teaches people to notice**, and
+would have repeated the archived-issue mistake on the very page that publishes
+the rules. So each rule got enforced in the model first:
+
+- `EvidenceLink` gained a `date`, nullable so "we could not establish it" is a
+  stated finding rather than a blank field.
+- `Revision` gained `evidence`, and `rules.test.ts` fails the build if a
+  correction ships without it — a correction that cannot show what prompted it
+  is an assertion, not a correction.
+- `AnonymousSourceDisclosure` and `SponsorshipDisclosure` are new records.
+
+Verified by breaking it on purpose in the browser: stripping evidence from the
+seeded correction and deleting the sponsorship declaration flipped the header
+to "2 unmet" and printed `rev-005: missing evidence`. A self-audit that can
+only ever say "Met" is decoration.
+
+### Rule 3 binds our record of others, not our own reporting
+
+Counterframe does not report; it compares. It cannot make Outlook India justify
+"a senior official said on Friday", so a rule phrased as a promise about
+anonymous sourcing would be one it has no power to keep. It is written instead
+as a commitment to **record, consistently, what the outlet did or did not
+disclose** — and the rule carries that scope visibly in the UI. A test asserts
+`binds === "our-record-of-others"` so the distinction cannot be lost in an edit.
+
+### The buffer ranks rather than lists
+
+`/changes` reads the whole record — revisions, decisions, corrections,
+moderation, appeals, translations, funding, discussion — and ranks it. A
+correction or an upheld appeal is a development; a tag edit or a funding line
+is housekeeping. Majors are listed, minors are counted and collapsed, and
+**nothing is dropped**, because a digest that quietly discarded events would be
+a worse failure here than a long page.
+
+First attempt grouped by day and produced **34 headings for 49 events** — more
+headings than content, longer than the archive it was meant to compress.
+Grouping by month gives 8, with each row carrying its own date. A test now
+asserts groups stay below a third of event count, so the buffer cannot quietly
+stop buffering.
+
+### One bug this surfaced
+
+Adding collections to the schema **crashed every browser holding an older
+snapshot** — the stored database has no `sponsorship` key, so the first
+component to map over it threw. Bumping the key would have fixed this instance;
+instead hydration now merges the stored snapshot *over* a fresh seed, so any
+future collection arrives with its default while the reader keeps their own
+progress, takes and votes.
+
 ## 12. Accessibility fixes made during browser verification
 
 These were found by measuring, not by inspection:
